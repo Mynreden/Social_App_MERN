@@ -8,6 +8,6 @@ router.use(verifyToken)
 router.get("/:id", getUser)
 router.get("/:id/friends", getUserFriends)
 
-router.patch
+router.patch("/:userId/:friendId", addRemoveFriend)
 
 export default router;

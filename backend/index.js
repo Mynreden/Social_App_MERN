@@ -10,6 +10,7 @@ import multer from "multer"
 import { register } from "./controllers/auth.js"
 import authRouter from "./routes/auth.js"
 import userRouter from "./routes/user.js"
+import postRouter from "./routes/post.js"
 
 //Some code to get variables from .env file
 dotenv.config()
@@ -47,23 +48,11 @@ app.use(bodyParser.urlencoded({extended: true})) // For parsing application/x-ww
 app.use('/public', express.static(staticDir)); // We can get elements such as media by url. 
                                                //Example: https://localhost:3001/static/photo/id.png
 
-// upload files
-const storage = multer.diskStorage({ // in this line we define Strorage for multer
-    destination: (req, file, callback) => {
-        callback(null, "public/avatars") // callback(err: Error, destination: String)
-    },
-    filename: (req, file, callback) => {
-        callback(null, file.originalname) // callback(err: Error, detination: String)
-    }
-})
-const upload = multer({storage}) // multer middlware uses form data files and transform it into req.file(upload.sindle()) 
-                                 // or req.files(upload.array())
-
 
 // Routes
-app.post('/auth/register', upload.single('picture'), register) // route for registration
 app.use('/auth', authRouter)
 app.use('/users', userRouter)
+app.use('/posts', postRouter)
 
 app.get('/', (req, res) => {
     res.send("Hello")
